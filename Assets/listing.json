@@ -1,6 +1,6 @@
 {
   "name": "Catalog",
-  "tagline": "A catalog of collections for any app: cards with a detail sheet and an edit form, others' ranked and searchable, and groupings of them, from the app's own types.",
+  "tagline": "A catalog of collections for any app: cards with a detail sheet and an edit form, others' ranked and searchable, and groupings of them.",
   "category": "developer",
   "keywords": [
     "swiftui",

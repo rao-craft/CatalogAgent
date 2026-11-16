@@ -1,0 +1,215 @@
+{
+  "agent" : {
+    "word" : "catalog"
+  },
+  "conformances" : [
+    "ModelGroup: collection",
+    "Note: document",
+    "World: listing",
+    "Loom: grouping"
+  ],
+  "expected" : [
+    {
+      "kind" : "view",
+      "name" : "CollectionsView"
+    },
+    {
+      "kind" : "view",
+      "name" : "CollectionCard"
+    },
+    {
+      "kind" : "view",
+      "name" : "CollectionDetailView"
+    },
+    {
+      "kind" : "view",
+      "name" : "CollectionEditView"
+    },
+    {
+      "kind" : "view",
+      "name" : "CatalogView"
+    },
+    {
+      "kind" : "view",
+      "name" : "ListingsView"
+    },
+    {
+      "kind" : "view",
+      "name" : "ListingRow"
+    },
+    {
+      "kind" : "view",
+      "name" : "GroupingsView"
+    },
+    {
+      "kind" : "view",
+      "name" : "GroupingFormView"
+    },
+    {
+      "kind" : "conformance",
+      "name" : "ModelGroup"
+    },
+    {
+      "kind" : "conformance",
+      "name" : "Note"
+    },
+    {
+      "kind" : "conformance",
+      "name" : "World"
+    },
+    {
+      "kind" : "conformance",
+      "name" : "Loom"
+    }
+  ],
+  "format" : "granite-answer/1",
+  "initializers" : [
+    "CollectionsView(collections: [ModelGroup], documents: [Note], leading: (@MainActor () -> Void)? = nil, trailing: (@MainActor () -> Void)? = nil, refresh: (@MainActor () async throws -> Void)? = nil, save: (@MainActor (CatalogCollectionDraft) async throws -> Void)? = nil, delete: (@MainActor (String) async throws -> Void)? = nil, deleteDocument: (@MainActor (String) async throws -> Void)? = nil, page: (@MainActor (Note) -> AnyView)? = nil)",
+    "CatalogView(listings: [World], mine: [ModelGroup], groupings: [Loom], active: String? = nil, select: (@MainActor (String?) async throws -> Void)? = nil, save: (@MainActor (CatalogGroupingDraft) async throws -> Void)? = nil, delete: (@MainActor (String) async throws -> Void)? = nil, refresh: (@MainActor () async throws -> Void)? = nil, search: (@MainActor (String) async throws -> [World])? = nil, close: (@MainActor () -> Void)? = nil)"
+  ],
+  "made" : [
+    {
+      "kind" : "view",
+      "name" : "CollectionsView",
+      "path" : "Components/Catalog/CollectionsView.swift",
+      "state" : "written"
+    },
+    {
+      "kind" : "view",
+      "name" : "CollectionCard",
+      "path" : "Components/Catalog/CollectionCard.swift",
+      "state" : "written"
+    },
+    {
+      "kind" : "view",
+      "name" : "CollectionDetailView",
+      "path" : "Components/Catalog/CollectionDetailView.swift",
+      "state" : "written"
+    },
+    {
+      "kind" : "view",
+      "name" : "CollectionEditView",
+      "path" : "Components/Catalog/CollectionEditView.swift",
+      "state" : "written"
+    },
+    {
+      "kind" : "view",
+      "name" : "CatalogTagsEditor",
+      "path" : "Components/Catalog/CatalogTagsEditor.swift",
+      "state" : "written"
+    },
+    {
+      "kind" : "view",
+      "name" : "CatalogSwatchesView",
+      "path" : "Components/Catalog/CatalogSwatchesView.swift",
+      "state" : "written"
+    },
+    {
+      "kind" : "view",
+      "name" : "CatalogView",
+      "path" : "Components/Catalog/CatalogView.swift",
+      "state" : "written"
+    },
+    {
+      "kind" : "view",
+      "name" : "ListingRow",
+      "path" : "Components/Catalog/ListingRow.swift",
+      "state" : "written"
+    },
+    {
+      "kind" : "view",
+      "name" : "ListingsView",
+      "path" : "Components/Catalog/ListingsView.swift",
+      "state" : "written"
+    },
+    {
+      "kind" : "view",
+      "name" : "AddToGroupingView",
+      "path" : "Components/Catalog/AddToGroupingView.swift",
+      "state" : "written"
+    },
+    {
+      "kind" : "view",
+      "name" : "GroupingsView",
+      "path" : "Components/Catalog/GroupingsView.swift",
+      "state" : "written"
+    },
+    {
+      "kind" : "view",
+      "name" : "GroupingFormView",
+      "path" : "Components/Catalog/GroupingFormView.swift",
+      "state" : "written"
+    },
+    {
+      "kind" : "conformance",
+      "name" : "ModelGroup",
+      "path" : "Components/Catalog/Conformances/ModelGroup+Collection.swift",
+      "state" : "written"
+    },
+    {
+      "kind" : "conformance",
+      "name" : "Note",
+      "path" : "Components/Catalog/Conformances/Note+Document.swift",
+      "state" : "written"
+    },
+    {
+      "kind" : "conformance",
+      "name" : "World",
+      "path" : "Components/Catalog/Conformances/World+Listing.swift",
+      "state" : "written"
+    },
+    {
+      "kind" : "conformance",
+      "name" : "Loom",
+      "path" : "Components/Catalog/Conformances/Loom+Grouping.swift",
+      "state" : "written"
+    }
+  ],
+  "notes" : [
+    "The edit form hands `save` a CatalogCollectionDraft (id, name, summary, tags, color as the name it was given or a swatch's name, online); the menu's online switch saves the same draft with `online` flipped.",
+    "The grouping forms hand `save` a CatalogGroupingDraft (id, nil for a new one; name; members, each member's id; names, each member's name); `select` is handed a grouping's key, or nil to deselect."
+  ],
+  "path" : "Components/Catalog/CatalogProtocols.swift",
+  "paths" : [
+    "Components/Catalog/CatalogProtocols.swift",
+    "Components/Catalog/CatalogLook.swift",
+    "Components/Catalog/CatalogLaunch.swift",
+    "Components/Catalog/CatalogValue.swift",
+    "Components/Catalog/CatalogParts.swift",
+    "Components/Catalog/CatalogModels.swift",
+    "Components/Catalog/CatalogSamples.swift",
+    "Components/Catalog/CollectionsView.swift",
+    "Components/Catalog/CollectionCard.swift",
+    "Components/Catalog/CollectionDetailView.swift",
+    "Components/Catalog/CollectionEditView.swift",
+    "Components/Catalog/CatalogTagsEditor.swift",
+    "Components/Catalog/CatalogSwatchesView.swift",
+    "Components/Catalog/CatalogView.swift",
+    "Components/Catalog/ListingRow.swift",
+    "Components/Catalog/ListingsView.swift",
+    "Components/Catalog/AddToGroupingView.swift",
+    "Components/Catalog/GroupingsView.swift",
+    "Components/Catalog/GroupingFormView.swift",
+    "Components/Catalog/Conformances/ModelGroup+Collection.swift",
+    "Components/Catalog/Conformances/Note+Document.swift",
+    "Components/Catalog/Conformances/World+Listing.swift",
+    "Components/Catalog/Conformances/Loom+Grouping.swift"
+  ],
+  "problems" : [
+
+  ],
+  "views" : [
+    "CollectionsView",
+    "CollectionCard",
+    "CollectionDetailView",
+    "CollectionEditView",
+    "CatalogTagsEditor",
+    "CatalogSwatchesView",
+    "CatalogView",
+    "ListingRow",
+    "ListingsView",
+    "AddToGroupingView",
+    "GroupingsView",
+    "GroupingFormView"
+  ]
+}

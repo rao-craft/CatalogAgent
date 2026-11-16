@@ -1,0 +1,40 @@
+{
+  "into": "Shared/Views/Cookbooks",
+  "mappings": [
+    "collection: Cookbook name=title summary=blurb count=recipeCount earnings=sales tags=cuisines online=isPublished color=tint updated=editedAt",
+    "document: Recipe title=name updated=addedAt collection=bookID",
+    "listing: SharedBook name=title owner=author.name summary=blurb tags=cuisines credits=sales count=recipeCount rank=position",
+    "grouping: Shelf name=label members=bookIDs"
+  ],
+  "look": ["accent = Color.orange", "design = rounded"],
+  "strings": [
+    "collection = \"cookbook\"",
+    "collections = \"cookbooks\"",
+    "grouping = \"shelf\"",
+    "groupings = \"shelves\"",
+    "catalog.title = \"Kitchen\"",
+    "browse.tab = \"Popular\"",
+    "card.documents.one = \"recipe\"",
+    "card.documents.other = \"recipes\"",
+    "card.earnings = \"sales\"",
+    "browse.credits = \"{credits} sold\"",
+    "browse.count.one = \"{count} recipe\"",
+    "browse.count.other = \"{count} recipes\""
+  ],
+  "symbols": [
+    "mine.trailing = cart",
+    "mine.empty = book.closed",
+    "document = fork.knife",
+    "groupings.empty = books.vertical"
+  ],
+  "tuning": [
+    "press = .snappy",
+    "detail = [.medium, .large]",
+    "swatches = red orange yellow green teal blue purple brown",
+    "cardDate = .long"
+  ],
+  "launch": [
+    "books = mine",
+    "book = detail \"Weeknights\""
+  ]
+}

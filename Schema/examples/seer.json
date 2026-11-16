@@ -1,0 +1,70 @@
+{
+  "mappings": [
+    "collection: ModelGroup name=name summary=summary count=documents earnings=earnings tags=tags online=online color=color",
+    "document: Note title=title updated=createdAt collection=category",
+    "listing: World name=name owner=owner summary=summary tags=tags credits=credits count=documents",
+    "grouping: Loom name=name members=models"
+  ],
+  "imports": ["SeerKit"],
+  "look": [
+    "accent = Color.accent",
+    "card = #FFFFFF / #FFFFFF 0.10",
+    "panel = #FFFFFF / #1A1A1A",
+    "cardShadow = #8E8E8E 0.14 / clear",
+    "fieldShadow = #8E8E8E 0.40 / clear",
+    "badgeShadow = #8E8E8E 0.40 / clear",
+    "title = Font.brandTitle",
+    "body = Font.brandBody",
+    "body2 = Font.brandBody2",
+    "note = Font.brandNote",
+    "note2 = Font.brandNote2",
+    "design = serif",
+    "layer1 = CGFloat.layer1",
+    "layer2 = CGFloat.layer2",
+    "layer3 = CGFloat.layer3",
+    "layer4 = CGFloat.layer4",
+    "layer5 = CGFloat.layer5",
+    "layer6 = CGFloat.layer6",
+    "layer7 = CGFloat.layer7"
+  ],
+  "strings": [
+    "collection = \"model\"",
+    "collections = \"models\"",
+    "grouping = \"loom\"",
+    "groupings = \"looms\"",
+    "mine.trailing = \"Wallet\"",
+    "mine.empty.message = \"Start writing and assign a category!\"",
+    "close = \"Dismiss\"",
+    "catalog.title = \"The World\"",
+    "browse.credits = \"{credits} cr\"",
+    "groupings.empty.message = \"Create a Loom to organize and filter your favorite models for focused conversations.\"",
+    "form.name = \"e.g. Research, News, Deep Cuts…\""
+  ],
+  "symbols": [
+    "mine.leading = person",
+    "mine.trailing = wallet.bifold",
+    "mine.empty = questionmark.folder.fill",
+    "document = text.document.fill",
+    "groupings.empty = slider.horizontal.3"
+  ],
+  "tuning": [
+    "press = .spring(duration: 0.2, bounce: 0.4)",
+    "earnings = .spring(duration: 0.65, bounce: 0.35).delay(0.1)",
+    "pulse = .easeInOut(duration: 1.9).repeatForever(autoreverses: true)",
+    "tags = .spring(duration: 0.25)",
+    "pressScale = 0.97",
+    "pulseScale = 1.4",
+    "detail = [.fraction(0.6)]",
+    "edit = [.fraction(0.78), .large]",
+    "color = [.fraction(0.32)]",
+    "colorRadius = 28",
+    "cardDate = \"MMMM d, yyyy · h:mm:ss a\""
+  ],
+  "launch": [
+    "models = mine",
+    "model = detail \"Space\"",
+    "model.edit = edit \"Space\"",
+    "world = browse",
+    "looms = groupings"
+  ]
+}

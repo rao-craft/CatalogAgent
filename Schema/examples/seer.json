@@ -1,6 +1,6 @@
 {
   "mappings": [
-    "collection: ModelGroup name=name summary=summary count=documents earnings=earnings tags=tags online=online color=color",
+    "collection: ModelGroup name=name summary=summary count=documents earnings=earnings tags=tags online=online color=color updated=updatedAt",
     "document: Note title=title updated=createdAt collection=category",
     "listing: World name=name owner=owner summary=summary tags=tags credits=credits count=documents",
     "grouping: Loom name=name members=models"
@@ -65,6 +65,7 @@
     "model = detail \"Space\"",
     "model.edit = edit \"Space\"",
     "world = browse",
-    "looms = groupings"
+    "looms = groupings",
+    "looms.create = groupings new"
   ]
 }

@@ -6,7 +6,7 @@
 //            strings: catalog.title = "The World"        browse.credits = "{credits} cr"
 //            symbols: mine.trailing = wallet.bifold
 //            tuning:  press = .spring(duration: 0.2, bounce: 0.4)        detail = [.fraction(0.6)]
-//            launch:  model = detail "Space"             looms = groupings
+//            launch:  model = detail "Space"             looms = groupings             looms.create = groupings new
 //
 //  PIN:  A LINE THAT IS NOT UNDERSTOOD IS REFUSED WITH THE REASON, naming what the key takes or which keys there are,
 //        so the model fixes the line it is told about instead of guessing again.
@@ -307,6 +307,8 @@ struct LaunchState: Sendable, Equatable {
     enum State: Sendable, Equatable {
         case mine, browse, groupings
         case detail(String), edit(String)
+        /// The groupings, with the form for a new one up.
+        case newGrouping
 
         /// The `CatalogLaunch` case, as Swift.
         var swift: String {
@@ -314,6 +316,7 @@ struct LaunchState: Sendable, Equatable {
             case .mine: return ".mine"
             case .browse: return ".browse"
             case .groupings: return ".groupings"
+            case .newGrouping: return ".newGrouping"
             case .detail(let name): return ".detail(\(TemplateFill.literal(name)))"
             case .edit(let name): return ".edit(\(TemplateFill.literal(name)))"
             }
@@ -326,7 +329,7 @@ struct LaunchState: Sendable, Equatable {
 
 enum LaunchLine {
     static let example = "model = detail \"Space\""
-    static let states = "mine, detail \"<name>\", edit \"<name>\", browse or groupings"
+    static let states = "mine, detail \"<name>\", edit \"<name>\", browse, groupings or groupings new"
 
     static func parse(_ line: String) throws -> LaunchState {
         let (destination, value) = try ValueLine.split(line, example: example)
@@ -348,11 +351,14 @@ enum LaunchLine {
         case ("mine", nil): state = .mine
         case ("browse", nil): state = .browse
         case ("groupings", nil): state = .groupings
+        case ("groupings", let name?) where name.lowercased() == "new": state = .newGrouping
         case ("detail", let name?): state = .detail(name)
         case ("edit", let name?): state = .edit(name)
         case ("detail", nil), ("edit", nil):
             throw CatalogError.line(line, "`\(word)` opens one collection: name it, like `\(word) \"Space\"`")
-        case (_, .some) where ["mine", "browse", "groupings"].contains(word):
+        case ("groupings", .some):
+            throw CatalogError.line(line, "`groupings` takes no name: `groupings new` opens the form for a new grouping")
+        case (_, .some) where ["mine", "browse"].contains(word):
             throw CatalogError.line(line, "`\(word)` takes no name")
         default:
             throw CatalogError.line(line, "`\(word)` is not a state; a destination opens in \(states)")

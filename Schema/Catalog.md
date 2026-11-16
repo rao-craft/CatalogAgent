@@ -26,7 +26,7 @@ code (what it takes, what it makes, and the tables of words, look roles, symbols
 | `strings` | no | one line a word, `key = "words"`: the nouns collection, collections, grouping, groupings first (every default is made of them), then any key such as catalog.title, browse.credits = "{credits} cr" or detail.title = "{name} {Collection}" |
 | `symbols` | no | one line an SF Symbol, `key = name`: mine.leading, mine.trailing, mine.empty, groupings.empty and the rest |
 | `tuning` | no | one line a timing, size or style, `key = value`: press, earnings, pulse, tags (animations as SwiftUI writes them), pressScale, pulseScale, earningsRise, cardRadius, fieldRadius, gradientStart, gradientStop, colorRadius, swatchSize (numbers), swatchColumns, decimals, topRanks, publicLimit (whole numbers), detail, edit, color, add, form (detents like [.fraction(0.6)]), swatches (system colour names), cardDate (a date style or a quoted format), cardTime, rowDate (styles) |
-| `launch` | no | one line a destination, `destination = state`: mine, detail "<name>", edit "<name>", browse or groupings; the views open in that state, their own sheets presented, when the app is launched with -destination <name> |
+| `launch` | no | one line a destination, `destination = state`: mine, detail "<name>", edit "<name>", browse, groupings, or groupings new (the groupings with the new grouping's form up); the views open in that state, their own sheets presented, when the app is launched with -destination <name> |
 | `prefix` | no | a prefix for the view types when the app already has views of these names: `Kit` writes KitCatalogView |
 | `imports` | no | modules the conformances import, such as the package a mapped type is declared in |
 <!-- /fields -->
@@ -128,6 +128,7 @@ model = detail "Space"
 model.edit = edit "Space"
 world = browse
 looms = groupings
+looms.create = groupings new
 ```
 
 When the app is launched with `-destination <name>`, as UI tests and screenshots launch it, the view the state
@@ -140,6 +141,7 @@ belongs to opens in it and presents its own sheets. The states:
 | `edit "<name>"` | that collection's edit form over the cards |
 | `browse` | others' collections, ranked, on the browse tab |
 | `groupings` | the groupings tab |
+| `groupings new` | the groupings tab with the form for a new grouping up |
 
 A destination is letters, digits, dots and dashes. The views open the state; getting to the page that shows them is
 the app's navigation.
@@ -427,7 +429,7 @@ The call that writes Seer's Models, Model, Model edit, The World and Looms ([`ex
 ```json
 {
   "mappings": [
-    "collection: ModelGroup name=name summary=summary count=documents earnings=earnings tags=tags online=online color=color",
+    "collection: ModelGroup name=name summary=summary count=documents earnings=earnings tags=tags online=online color=color updated=updatedAt",
     "document: Note title=title updated=createdAt collection=category",
     "listing: World name=name owner=owner summary=summary tags=tags credits=credits count=documents",
     "grouping: Loom name=name members=models"
@@ -492,7 +494,8 @@ The call that writes Seer's Models, Model, Model edit, The World and Looms ([`ex
     "model = detail \"Space\"",
     "model.edit = edit \"Space\"",
     "world = browse",
-    "looms = groupings"
+    "looms = groupings",
+    "looms.create = groupings new"
   ]
 }
 ```
@@ -507,7 +510,7 @@ CollectionsView(collections: models.state.models, documents: library.state.notes
                 deleteDocument: { try await library.deleteNote(id: $0) })
 ```
 
-The World sheet over the Void (`world`, and `looms` through its launch state) shows:
+The World sheet over the Void (`world`, and `looms` and `looms.create` through their launch states) shows:
 
 ```swift
 CatalogView(listings: world.state.worlds, mine: models.state.models, groupings: world.state.looms,
@@ -519,7 +522,7 @@ CatalogView(listings: world.state.worlds, mine: models.state.models, groupings: 
 What Seer provides for them:
 
 - **Types** (SeerKit): `ModelGroup` (`name`, `summary`, `documents: Int`, `earnings: Double`, `tags: [String]`,
-  `online: Bool`, `color: String`); `Note` (`title`, `createdAt: Date`, `category`: a model's id or name); `World`
+  `online: Bool`, `color: String`, `updatedAt: Date`); `Note` (`title`, `createdAt: Date`, `category`: a model's id or name); `World`
   (`name`, `owner: String`, `summary`, `tags: [String]`, `credits: Double`, `documents: Int`); `Loom` (`name`,
   `models: [String]`, each a model's id or name).
 - **Services** (Granite relays): `models.state.models`, `models.load()`, `models.save(draft:)`,
@@ -527,8 +530,9 @@ What Seer provides for them:
   `world.state.looms`, `world.state.activeLoom: String?`, `world.set(.activeLoom(_:))`, `world.load()`,
   `world.loadLooms()`, `world.saveLoom(draft:)`, `world.deleteLoom(id:)`; `layout.present(.profile)`,
   `layout.present(.wallet)`, `layout.closeSheet()`.
-- **Navigation**: `model` and `model.edit` reach the Models page, and `looms` The World sheet, where the views open
-  the state. The World is a sheet at `[.medium, .large]`, opened at `.large` for `world` and `.medium` for `looms`;
+- **Navigation**: `model` and `model.edit` reach the Models page, and `looms` and `looms.create` The World sheet,
+  where the views open the state. The World is a sheet at `[.medium, .large]`, opened at `.large` for `world` and
+  `.medium` for `looms` and `looms.create`;
   the kit draws its own close button, so the host draws none. The Void reads `world.state.activeLoom != nil` for its
   active loom.
 
@@ -568,6 +572,14 @@ a mapped field of the project's own type, the type's fields or the types the wor
 
 Each change made to make this agent more precise, dated, with the run that measured it and what it made of what it
 was asked before and after (`TESTING.md`). Newest first.
+
+### 2026-11-15 · `groupings new`; the card's date mapped for Seer
+
+A launch state for the form that makes a grouping: `groupings new` opens the groupings tab with the New form up from
+the first frame, as the original's `looms.create` shot was taken. The Seer call launches `looms.create` into it, and
+maps a model's card date to `updatedAt` ("November 12, 2026 · 9:05:00 AM" in the shots).
+
+Measured: not yet. The first measure is the one-shot Seer run.
 
 ### 2026-11-15 · first cut
 

@@ -72,7 +72,7 @@ public struct CatalogAgent: GraniteAgentPackage {
         "strings": "one line a word, `key = \"words\"`: the nouns collection, collections, grouping, groupings first (every default is made of them), then any key such as catalog.title, browse.credits = \"{credits} cr\" or detail.title = \"{name} {Collection}\"",
         "symbols": "one line an SF Symbol, `key = name`: mine.leading, mine.trailing, mine.empty, groupings.empty and the rest",
         "tuning": "one line a timing, size or style, `key = value`: press, earnings, pulse, tags (animations as SwiftUI writes them), pressScale, pulseScale, earningsRise, cardRadius, fieldRadius, gradientStart, gradientStop, colorRadius, swatchSize (numbers), swatchColumns, decimals, topRanks, publicLimit (whole numbers), detail, edit, color, add, form (detents like [.fraction(0.6)]), swatches (system colour names), cardDate (a date style or a quoted format), cardTime, rowDate (styles)",
-        "launch": "one line a destination, `destination = state`: mine, detail \"<name>\", edit \"<name>\", browse or groupings; the views open in that state, their own sheets presented, when the app is launched with -destination <name>",
+        "launch": "one line a destination, `destination = state`: mine, detail \"<name>\", edit \"<name>\", browse, groupings, or groupings new (the groupings with the new grouping's form up); the views open in that state, their own sheets presented, when the app is launched with -destination <name>",
         "prefix": "a prefix for the view types when the app already has views of these names: `Kit` writes KitCatalogView",
         "imports": "modules the conformances import, such as the package a mapped type is declared in",
     ]

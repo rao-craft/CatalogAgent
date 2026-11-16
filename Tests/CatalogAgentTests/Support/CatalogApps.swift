@@ -18,10 +18,12 @@ enum CatalogApps {
         public var tags: [String]
         public var online: Bool
         public var color: String
+        public var updatedAt: Date
 
-        public init(id: String, name: String, summary: String, documents: Int, earnings: Double, tags: [String], online: Bool, color: String) {
+        public init(id: String, name: String, summary: String, documents: Int, earnings: Double, tags: [String], online: Bool, color: String,
+                    updatedAt: Date) {
             self.id = id; self.name = name; self.summary = summary; self.documents = documents; self.earnings = earnings
-            self.tags = tags; self.online = online; self.color = color
+            self.tags = tags; self.online = online; self.color = color; self.updatedAt = updatedAt
         }
     }
 
@@ -147,32 +149,57 @@ enum CatalogApps {
     import Foundation
     import SeerKit
 
+    /// The reference stub's data, which the original's shots were taken with: its leaderboard by credits and its two
+    /// looms. Owners and lines the shots do not show (Roman Roads, Compilers Notebook, Tea Journal) are stand-ins.
     enum SeerSeed {
+        /// 9:05 in the morning, `day` November 2026 (October past the 30th): when a model last changed.
+        static func morning(_ day: Int) -> Date {
+            let components = day > 30 ? DateComponents(year: 2026, month: 10, day: day, hour: 9, minute: 5)
+                : DateComponents(year: 2026, month: 11, day: day, hour: 9, minute: 5)
+            return Calendar(identifier: .gregorian).date(from: components) ?? Date(timeIntervalSince1970: 1_794_500_000)
+        }
+
         static let models = [
             ModelGroup(id: "space", name: "Space", summary: "Planets, probes and telescopes: notes from a year of reading about spaceflight.",
-                       documents: 10, earnings: 18.42, tags: ["astronomy", "mars", "nasa"], online: true, color: "brown"),
+                       documents: 10, earnings: 18.42, tags: ["astronomy", "mars", "nasa"], online: true, color: "brown", updatedAt: morning(12)),
             ModelGroup(id: "cooking", name: "Cooking", summary: "Techniques and base recipes worth keeping, from carbonara to ramen broth.",
-                       documents: 10, earnings: 9.75, tags: ["recipes", "technique"], online: true, color: "brown"),
+                       documents: 10, earnings: 9.75, tags: ["recipes", "technique"], online: true, color: "brown", updatedAt: morning(9)),
             ModelGroup(id: "ml", name: "Machine Learning", summary: "Working notes on how neural networks learn and where they fail.",
-                       documents: 10, earnings: 7.90, tags: ["ai", "training"], online: false, color: "brown"),
+                       documents: 10, earnings: 7.90, tags: ["ai", "training"], online: true, color: "brown", updatedAt: morning(6)),
+            ModelGroup(id: "history", name: "Ancient History", summary: "Empires, libraries and trade routes of the ancient world.",
+                       documents: 10, earnings: 4.10, tags: ["rome", "egypt", "trade"], online: true, color: "brown", updatedAt: morning(3)),
+            ModelGroup(id: "music", name: "Music", summary: "Scales, rhythm and harmony, written while learning to play.",
+                       documents: 10, earnings: 2.35, tags: ["theory", "rhythm"], online: false, color: "brown", updatedAt: morning(31)),
         ]
         static let notes = (1...6).map { day in
             Note(id: "space-00\\(day)", title: "space-00\\(day)", body: "", category: "Space",
                  createdAt: Date(timeIntervalSince1970: 1_794_500_000 - Double(day) * 86_400))
         }
         static let worlds = [
-            World(id: "orbital", name: "Orbital Mechanics", owner: "Tomas Vey", summary: "Transfers, windows and the arithmetic of orbits.",
-                  tags: ["space", "physics"], credits: 58.40, documents: 8, members: 3),
-            World(id: "jazz", name: "Jazz Voicings", owner: "Jun Okafor", summary: "Chord shapes and inner lines for standards.",
-                  tags: ["jazz", "harmony"], credits: 41.75, documents: 10, members: 2),
-            World(id: "sourdough", name: "Sourdough Lab", owner: "Mara Ellison", summary: "Starters, flours and slow ferments.",
-                  tags: ["baking", "bread"], credits: 36.10, documents: 6, members: 2),
+            World(id: "stoic", name: "Stoic Letters", owner: "Tomas Vey", summary: "Seneca and Epictetus, annotated letter by letter.",
+                  tags: ["philosophy", "stoicism"], credits: 61.20, documents: 4, members: 2),
+            World(id: "botany", name: "Field Botany", owner: "Priya Nand", summary: "Plant keys and field sketches from two seasons in the Western Ghats.",
+                  tags: ["plants", "fieldwork"], credits: 48.90, documents: 7, members: 2),
+            World(id: "jazz", name: "Jazz Voicings", owner: "Jun Okafor", summary: "Rootless voicings and comping patterns for standards.",
+                  tags: ["jazz", "piano"], credits: 37.40, documents: 10, members: 2),
+            World(id: "sourdough", name: "Sourdough Lab", owner: "Mara Ellison", summary: "Hydration, flour blends and fermentation timings, measured.",
+                  tags: ["baking", "fermentation"], credits: 33.00, documents: 6, members: 2),
+            World(id: "orbital", name: "Orbital Mechanics", owner: "Tomas Vey", summary: "Transfers, windows and delta-v budgets worked by hand.",
+                  tags: ["space", "physics"], credits: 29.60, documents: 9, members: 3),
             World(id: "roman", name: "Roman Roads", owner: "Priya Nand", summary: "How an empire moved goods, armies and news.",
-                  tags: ["history", "trade"], credits: 22.90, documents: 5, members: 1),
+                  tags: ["history", "trade"], credits: 21.30, documents: 5, members: 1),
+            World(id: "space", name: "Space", owner: "Ada Marlow", summary: "Planets, probes and telescopes: notes from a year of reading about spaceflight.",
+                  tags: ["astronomy", "mars", "nasa"], credits: 18.42, documents: 10, members: 1),
+            World(id: "compilers", name: "Compilers Notebook", owner: "Jun Okafor", summary: "Parsers, type checkers and code generation, one pass at a time.",
+                  tags: ["compilers", "languages"], credits: 17.80, documents: 8, members: 1),
+            World(id: "tea", name: "Tea Journal", owner: "Mara Ellison", summary: "Tastings, steep times and the gardens behind each leaf.",
+                  tags: ["tea", "tasting"], credits: 12.40, documents: 6, members: 1),
+            World(id: "cooking", name: "Cooking", owner: "Ada Marlow", summary: "Techniques and base recipes worth keeping, from carbonara to ramen broth.",
+                  tags: ["recipes", "technique"], credits: 9.75, documents: 10, members: 1),
         ]
         static let looms = [
-            Loom(id: "research", name: "Research", summary: "", documents: 0, models: ["Space", "Orbital Mechanics"]),
-            Loom(id: "deep-cuts", name: "Deep Cuts", summary: "", documents: 0, models: ["Jazz Voicings", "Sourdough Lab", "Salt and Smoke"]),
+            Loom(id: "night-sky", name: "Night Sky", summary: "", documents: 0, models: ["Space", "Orbital Mechanics"]),
+            Loom(id: "kitchen", name: "Kitchen", summary: "", documents: 0, models: ["Cooking", "Sourdough Lab", "Tea Journal"]),
         ]
     }
     """
@@ -238,12 +265,22 @@ enum CatalogApps {
             draw("ranking", ListingsView(listings: ranked, add: { _ in }, new: {}))
             draw("row", ListingRow(entry: ranked[0], add: { _ in }))
             draw("looms", GroupingsView(groupings: looms, entries: ranked + mine, select: { _ in }, delete: { _ in }, new: {}, edit: { _ in }))
-            draw("active", GroupingsView(groupings: looms, entries: ranked + mine, active: "research", select: { _ in }))
+            draw("active", GroupingsView(groupings: looms, entries: ranked + mine, active: "night-sky", select: { _ in }))
             draw("empty looms", GroupingsView(groupings: [], entries: [], new: {}))
             draw("new loom", GroupingFormView(grouping: nil, members: [], listings: ranked, mine: mine, save: { _ in }))
             draw("edit loom", GroupingFormView(grouping: looms[0], members: [ranked[0], mine[0]], listings: ranked, mine: mine, save: { _ in }))
             draw("add", AddToGroupingView(entry: ranked[1], groupings: looms, mine: mine, entries: ranked + mine, save: { _ in }, new: { _ in }))
             draw("no models", NavigationStack { CollectionsView(collections: [ModelGroup](), documents: [Note]()) })
+            // Each destination as a -destination launch opens it: the state read in the registration domain, never saved.
+            for destination in ["models", "model", "model.edit", "world", "looms", "looms.create"] {
+                UserDefaults.standard.register(defaults: ["destination": destination])
+                if destination.hasPrefix("model") {
+                    draw("launch " + destination, NavigationStack { ModelsPage() })
+                } else {
+                    draw("launch " + destination, NavigationStack { WorldPage() })
+                }
+            }
+            UserDefaults.standard.register(defaults: ["destination": ""])
             return (drawn, failed)
         }
     }

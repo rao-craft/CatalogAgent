@@ -36,11 +36,13 @@ CATALOG_EXAMPLES=1 swift test                         # writes the schemas, the 
 - **Later**: a kit made by two calls into one folder, the second adding a screen and a launch line to the first.
 
 Then `swift build` for the Mac with no warning in the kit's files, `swift run Check` to draw every screen of every app
-offscreen with `ImageRenderer`, and `xcodebuild -destination 'generic/platform=iOS Simulator'` with no warning in the
-kit's files. No simulator is booted.
+offscreen with `ImageRenderer` (Seer's pages again under each `-destination` launch state, read from the registration
+domain and never saved), and `xcodebuild -destination 'generic/platform=iOS Simulator'` with no warning in the kit's
+files. No simulator is booted. Seer's stand-in data is the reference stub's, which the original's shots were taken
+with.
 
-Last run, 2026-11-15: 111 files written for 5 apps; the Mac built with 0 warnings in the kit's files; 36 screens drawn;
-the iOS simulator build succeeded with 0 warnings in the kit's files; 39.5 s.
+Last run, 2026-11-15: 111 files written for 5 apps; the Mac built with 0 warnings in the kit's files; 48 screens drawn;
+the iOS simulator build succeeded with 0 warnings in the kit's files; 45.3 s.
 
 ## Conformance on Seer
 
@@ -55,8 +57,9 @@ above.
   (the data), and B-world-17 is the Void page's (it reads the active loom). Run over the real scorecard: 22 of 22.
 - **Every quoted string** of the spec's Models, Model detail, Model edit, The World and Looms is in the emitted code,
   the words the views fill in as they draw (a name, a count, credits) checked by their literal parts.
-- **The destinations** `models`, `model`, `model.edit`, `world` and `looms` open the states the spec names:
-  the cards, "Space"'s detail sheet, "Space"'s edit form, the browse tab and the groupings tab.
+- **The destinations** `models`, `model`, `model.edit`, `world`, `looms` and `looms.create` open the states the
+  spec and the shots name: the cards, "Space"'s detail sheet, "Space"'s edit form, the browse tab, the groupings tab,
+  and the groupings tab with the New Loom form up.
 - **The look** maps Seer's names, leaves the text in the system's primary colour as the original draws it, and keeps
   serif for every other size.
 - **The initializers** the answer gives name Seer's types.

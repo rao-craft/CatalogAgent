@@ -201,6 +201,8 @@ final class LineTests: XCTestCase {
         XCTAssertEqual(try LaunchLine.parse("model = detail Space"), LaunchState(destination: "model", state: .detail("Space")), "a name left unquoted")
         XCTAssertEqual(try LaunchLine.parse("world = browse"), LaunchState(destination: "world", state: .browse))
         XCTAssertEqual(try LaunchLine.parse("looms = groupings"), LaunchState(destination: "looms", state: .groupings))
+        XCTAssertEqual(try LaunchLine.parse("looms.create = groupings new"), LaunchState(destination: "looms.create", state: .newGrouping))
+        XCTAssertEqual(LaunchState.State.newGrouping.swift, ".newGrouping")
         XCTAssertEqual(LaunchState.State.detail(#"Say "hi""#).swift, #".detail("Say \"hi\"")"#)
     }
 
@@ -211,6 +213,7 @@ final class LineTests: XCTestCase {
             ("model = detail", "`detail` opens one collection: name it"),
             (#"model = detail "Space"#, "is not a name: write it in quotes"),
             (#"models = mine "Space""#, "`mine` takes no name"),
+            (#"looms = groupings "Research""#, "`groupings` takes no name: `groupings new` opens the form for a new grouping"),
             ("models = cards", "`cards` is not a state; a destination opens in mine, detail"),
         ]
         for (line, reason) in refusals {

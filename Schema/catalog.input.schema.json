@@ -15,7 +15,7 @@
       "type" : "string"
     },
     "launch" : {
-      "description" : "one line a destination, `destination = state`: mine, detail \"<name>\", edit \"<name>\", browse or groupings; the views open in that state, their own sheets presented, when the app is launched with -destination <name>",
+      "description" : "one line a destination, `destination = state`: mine, detail \"<name>\", edit \"<name>\", browse, groupings, or groupings new (the groupings with the new grouping's form up); the views open in that state, their own sheets presented, when the app is launched with -destination <name>",
       "items" : {
         "type" : "string"
       },

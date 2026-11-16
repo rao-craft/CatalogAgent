@@ -76,7 +76,7 @@ final class ReferenceTests: XCTestCase {
         XCTAssertTrue(reference.contains(seer.trimmingCharacters(in: .whitespacesAndNewlines)), "Catalog.md gives the Seer call as seer.json holds it")
         XCTAssertTrue(reference.contains(SeerPages.models), "Catalog.md gives the Models page's body")
         XCTAssertTrue(reference.contains(SeerPages.world), "Catalog.md gives The World page's body")
-        for state in ["`mine`", "`detail \"<name>\"`", "`edit \"<name>\"`", "`browse`", "`groupings`"] {
+        for state in ["`mine`", "`detail \"<name>\"`", "`edit \"<name>\"`", "`browse`", "`groupings`", "`groupings new`"] {
             XCTAssertTrue(reference.contains(state), "Catalog.md names the launch state \(state)")
         }
     }

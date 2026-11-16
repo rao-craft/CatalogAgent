@@ -91,14 +91,21 @@ final class SeerTests: XCTestCase {
         let (result, _) = try seer()
         let launch = try Fixture.text(result.paths, "CatalogLaunch.swift")
         for line in [#"case "models": return .mine"#, #"case "model": return .detail("Space")"#, #"case "model.edit": return .edit("Space")"#,
-                     #"case "world": return .browse"#, #"case "looms": return .groupings"#] {
+                     #"case "world": return .browse"#, #"case "looms": return .groupings"#, #"case "looms.create": return .newGrouping"#] {
             XCTAssertTrue(launch.contains(line), line)
         }
         let collections = try Fixture.text(result.paths, "CollectionsView.swift")
         XCTAssertTrue(collections.contains("@State private var launch = CatalogLaunch.current"))
         XCTAssertTrue(collections.contains("unanimated.disablesAnimations = true"), "a launch's sheet goes up unanimated")
+        // `looms` and `looms.create` open the Looms tab; `looms.create` with the New Loom form up from the first frame.
         let catalog = try Fixture.text(result.paths, "CatalogView.swift")
-        XCTAssertTrue(catalog.contains("CatalogLaunch.current == .groupings ? .groupings : .browse"))
+        XCTAssertTrue(catalog.contains("_tab = State(initialValue: launch == .groupings || launch == .newGrouping ? .groupings : .browse)"))
+        XCTAssertTrue(catalog.contains("_form = State(initialValue: launch == .newGrouping ? CatalogForm(grouping: nil, members: []) : nil)"))
+        let form = try Fixture.text(result.paths, "GroupingFormView.swift")
+        for word in [#""New Loom""#, #""Loom name""#, #""e.g. Research, News, Deep Cuts…""#, #""Add your personal models""#,
+                     #""Cancel""#, #""Create""#] {
+            XCTAssertTrue(form.contains(word), "the New Loom form has \(word)")
+        }
     }
 
     /// The look is the original's: the bronze tint and DesignAgent's type and spacing by name, the cards' and panels'

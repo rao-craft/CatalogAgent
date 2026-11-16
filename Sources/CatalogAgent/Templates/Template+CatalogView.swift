@@ -44,7 +44,10 @@ extension Template {
             self.refresh = refresh
             self.search = search
             self.close = close
-            _tab = State(initialValue: CatalogLaunch.current == .groupings ? .groupings : .browse)
+            // A launch into the groupings opens on their tab; `groupings new` with the new grouping's form up.
+            let launch = CatalogLaunch.current
+            _tab = State(initialValue: launch == .groupings || launch == .newGrouping ? .groupings : .browse)
+            _form = State(initialValue: launch == .newGrouping ? CatalogForm(grouping: nil, members: []) : nil)
         }
 
         var body: some View {

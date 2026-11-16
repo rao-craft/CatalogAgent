@@ -171,7 +171,7 @@
       "type" : "array"
     },
     "tuning" : {
-      "description" : "one line a timing, size or style, `key = value`: press, earnings, pulse, tags (animations as SwiftUI writes them), pressScale, pulseScale, earningsRise, cardRadius, fieldRadius, gradientStart, gradientStop, colorRadius, swatchSize (numbers), swatchColumns, decimals, topRanks, publicLimit (whole numbers), detail, edit, color, add, form (detents like [.fraction(0.6)]), swatches (system colour names), cardDate (a date style or a quoted format), cardTime, rowDate (styles)",
+      "description" : "one line a timing, size or style, `key = value`: press, earnings, pulse, tags (animations as SwiftUI writes them), pressScale, pulseScale, earningsRise, cardRadius, fieldRadius, gradientStart, gradientStop, colorRadius, swatchSize (numbers), swatchColumns, decimals, topRanks, publicLimit (whole numbers), detail, edit, color, add, form (detents like [.fraction(0.6)]), swatches (system colour names), cardDate (a date style or a quoted format), cardTime, rowDate (styles), dateZone (the IANA time zone every date is drawn in, in US English; the device's when left out)",
       "examples" : [
         [
           "press = .spring(duration: 0.2, bounce: 0.4)",
@@ -199,7 +199,8 @@
           "swatches = red orange yellow green mint teal cyan blue indigo purple pink brown",
           "cardDate = .abbreviated",
           "cardTime = .omitted",
-          "rowDate = .abbreviated"
+          "rowDate = .abbreviated",
+          "dateZone = nil"
         ]
       ],
       "items" : {

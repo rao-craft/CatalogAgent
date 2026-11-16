@@ -263,6 +263,15 @@ enum TuningLine {
                 throw CatalogError.line(line, "`\(value)` is not a \(tuning.kind == .dateStyle ? "date" : "time") style: write " + styles.map { "." + $0 }.joined(separator: ", "))
             }
             return (key, "." + word)
+        case .zone:
+            // An IANA name, quoted or not, that this Mac's time zone database knows; nil keeps the device's zone.
+            let name = (ValueLine.unquoted(value) ?? value).trimmingCharacters(in: .whitespaces)
+            if name == "nil" { return (key, "nil") }
+            guard name.range(of: #"^[A-Za-z][A-Za-z0-9_+\-]*(/[A-Za-z0-9_+\-]+)*$"#, options: .regularExpression) != nil,
+                  TimeZone(identifier: name) != nil else {
+                throw CatalogError.line(line, "`\(value)` is not a time zone: write an IANA name, like `America/New_York`, or leave the line out for the device's zone")
+            }
+            return (key, "TimeZone(identifier: \(TemplateFill.literal(name)))")
         }
     }
 

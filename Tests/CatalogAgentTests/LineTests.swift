@@ -164,6 +164,9 @@ final class LineTests: XCTestCase {
         XCTAssertEqual(try TuningLine.parse("cardDate = .long").swift, ".long")
         XCTAssertEqual(try TuningLine.parse("cardTime = shortened").swift, ".shortened")
         XCTAssertEqual(try TuningLine.parse(#"cardDate = "MMMM d, yyyy · h:mm:ss a""#).swift, #""MMMM d, yyyy · h:mm:ss a""#)
+        XCTAssertEqual(try TuningLine.parse("dateZone = America/New_York").swift, #"TimeZone(identifier: "America/New_York")"#)
+        XCTAssertEqual(try TuningLine.parse(#"dateZone = "Asia/Kolkata""#).swift, #"TimeZone(identifier: "Asia/Kolkata")"#)
+        XCTAssertEqual(try TuningLine.parse("dateZone = nil").swift, "nil", "nil keeps the device's zone")
     }
 
     func testEveryTuningRefusalSaysWhy() {
@@ -184,6 +187,8 @@ final class LineTests: XCTestCase {
             ("cardTime = .abbreviated", "is not a time style"),
             (#"rowDate = "MMM d""#, "is not a date style"),
             (#"cardDate = "MMM \"d""#, "is not a date format"),
+            ("dateZone = Mars/Olympus", "is not a time zone: write an IANA name, like `America/New_York`"),
+            ("dateZone = New York", "is not a time zone"),
         ]
         for (line, reason) in refusals {
             XCTAssertThrowsError(try TuningLine.parse(line), line) { error in

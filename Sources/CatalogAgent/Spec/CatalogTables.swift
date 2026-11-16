@@ -85,9 +85,9 @@ struct CatalogSymbol: Sendable, Equatable {
     static func symbol(_ key: String) -> CatalogSymbol? { all.first { $0.key == key } }
 }
 
-/// A timing, size, number, detent list, swatch list or date style a view uses.
+/// A timing, size, number, detent list, swatch list, date style or time zone a view uses.
 struct CatalogTuning: Sendable, Equatable {
-    enum Kind: String, Sendable { case animation, number, whole, detents, swatches, dateStyle, timeStyle }
+    enum Kind: String, Sendable { case animation, number, whole, detents, swatches, dateStyle, timeStyle, zone }
     let key: String
     let kind: Kind
     /// The value as the templates write it.
@@ -125,6 +125,7 @@ struct CatalogTuning: Sendable, Equatable {
         .init("cardDate", .dateStyle, ".abbreviated", "a card's date: abbreviated, long, numeric or complete, or a quoted date format"),
         .init("cardTime", .timeStyle, ".omitted", "a card's time after its date: omitted, shortened, standard or complete"),
         .init("rowDate", .dateStyle, ".abbreviated", "a document row's date, its time omitted"),
+        .init("dateZone", .zone, "nil", "the time zone every date is drawn in, an IANA name such as America/New_York, in US English; nil draws in the device's zone and language"),
     ]
 
     static func tuning(_ key: String) -> CatalogTuning? { all.first { $0.key == key } }

@@ -58,7 +58,8 @@
     "edit = [.fraction(0.78), .large]",
     "color = [.fraction(0.32)]",
     "colorRadius = 28",
-    "cardDate = \"MMMM d, yyyy · h:mm:ss a\""
+    "cardDate = \"MMMM d, yyyy · h:mm:ss a\"",
+    "dateZone = America/New_York"
   ],
   "launch": [
     "models = mine",

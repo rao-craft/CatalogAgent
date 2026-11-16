@@ -105,10 +105,10 @@ enum TemplateFill {
             case "card":
                 guard let style = values.tuning["cardDate"], let time = values.tuning["cardTime"] else { throw Failure.unknown(token) }
                 if style.hasPrefix("\"") { return "CatalogValue.formatted(date, \(style))" }
-                return "date.formatted(date: \(style), time: \(time))"
+                return "CatalogValue.formatted(date, date: \(style), time: \(time))"
             case "row":
                 guard let style = values.tuning["rowDate"] else { throw Failure.unknown(token) }
-                return "date.formatted(date: \(style), time: .omitted)"
+                return "CatalogValue.formatted(date, date: \(style), time: .omitted)"
             default:
                 throw Failure.unknown(token)
             }

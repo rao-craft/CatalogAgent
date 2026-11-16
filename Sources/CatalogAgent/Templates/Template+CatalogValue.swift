@@ -144,12 +144,24 @@ extension Template {
         /// A number at the call's decimals: "18.42".
         static func amount(_ value: Double) -> String { String(format: "%.{{n:decimals}}f", value) }
 
-        /// `date` in a date format, in US English: "November 12, 2026 · 9:05:00 AM".
+        /// The time zone every date is drawn in: the call's, in US English; nil draws in the device's zone and language.
+        static let dateZone: TimeZone? = {{n:dateZone}}
+
+        /// `date` in a date format, in US English and the call's zone: "November 12, 2026 · 9:05:00 AM".
         static func formatted(_ date: Date, _ format: String) -> String {
             let formatter = DateFormatter()
             formatter.locale = Locale(identifier: "en_US")
+            if let dateZone { formatter.timeZone = dateZone }
             formatter.dateFormat = format
             return formatter.string(from: date)
+        }
+
+        /// `date` in a date and a time style: in the call's zone and US English when it names one, else the device's.
+        static func formatted(_ date: Date, date dateStyle: Date.FormatStyle.DateStyle, time timeStyle: Date.FormatStyle.TimeStyle) -> String {
+            guard let dateZone else { return date.formatted(date: dateStyle, time: timeStyle) }
+            let style = Date.FormatStyle(date: dateStyle, time: timeStyle, locale: Locale(identifier: "en_US"),
+                                         calendar: Calendar(identifier: .gregorian), timeZone: dateZone)
+            return date.formatted(style)
         }
 
         /// A card's date.

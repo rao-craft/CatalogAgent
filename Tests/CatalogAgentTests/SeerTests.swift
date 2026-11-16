@@ -125,7 +125,11 @@ final class SeerTests: XCTestCase {
         }
         let all = try seer().code
         XCTAssertTrue(all.contains(#"CatalogValue.formatted(date, "MMMM d, yyyy · h:mm:ss a")"#), "the card's date as the original writes it")
-        XCTAssertTrue(all.contains("date.formatted(date: .abbreviated, time: .omitted)"), "a row's: Nov 12, 2026")
+        XCTAssertTrue(all.contains("CatalogValue.formatted(date, date: .abbreviated, time: .omitted)"), "a row's: Nov 12, 2026")
+        // Every date in New York's zone and US English, whatever the device's, as the original's `asReadableDateTime`.
+        XCTAssertTrue(all.contains(#"static let dateZone: TimeZone? = TimeZone(identifier: "America/New_York")"#))
+        XCTAssertTrue(all.contains("if let dateZone { formatter.timeZone = dateZone }"))
+        XCTAssertTrue(all.contains(#"locale: Locale(identifier: "en_US")"#))
         XCTAssertTrue(all.contains(#""text.document.fill""#) && all.contains(#""person""#))
     }
 

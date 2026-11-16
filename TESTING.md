@@ -39,10 +39,12 @@ Then `swift build` for the Mac with no warning in the kit's files, `swift run Ch
 offscreen with `ImageRenderer` (Seer's pages again under each `-destination` launch state, read from the registration
 domain and never saved), and `xcodebuild -destination 'generic/platform=iOS Simulator'` with no warning in the kit's
 files. No simulator is booted. Seer's stand-in data is the reference stub's, which the original's shots were taken
-with.
+with, its dates at the data's own times (14:05Z): with the process set to Pacific time, as the shots' simulator was,
+the Check reads a card's date as "November 12, 2026 · 9:05:00 AM" and a row's as "Nov 12, 2026", New York's, through
+`dateZone`.
 
-Last run, 2026-11-15: 111 files written for 5 apps; the Mac built with 0 warnings in the kit's files; 48 screens drawn;
-the iOS simulator build succeeded with 0 warnings in the kit's files; 45.3 s.
+Last run, 2026-11-15: 111 files written for 5 apps; the Mac built with 0 warnings in the kit's files; 52 screens and
+dates checked; the iOS simulator build succeeded with 0 warnings in the kit's files; 31.3 s.
 
 ## Conformance on Seer
 
@@ -61,7 +63,8 @@ above.
   spec and the shots name: the cards, "Space"'s detail sheet, "Space"'s edit form, the browse tab, the groupings tab,
   and the groupings tab with the New Loom form up.
 - **The look** maps Seer's names, leaves the text in the system's primary colour as the original draws it, and keeps
-  serif for every other size.
+  serif for every other size. Every date is drawn in New York's zone and US English (`dateZone`), as the original's
+  `asReadableDateTime`.
 - **The initializers** the answer gives name Seer's types.
 
 Design parity with the original's subviews is held by an inventory of them (Craft's

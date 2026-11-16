@@ -152,24 +152,24 @@ enum CatalogApps {
     /// The reference stub's data, which the original's shots were taken with: its leaderboard by credits and its two
     /// looms. Owners and lines the shots do not show (Roman Roads, Compilers Notebook, Tea Journal) are stand-ins.
     enum SeerSeed {
-        /// 9:05 in the morning, `day` November 2026 (October past the 30th): when a model last changed.
-        static func morning(_ day: Int) -> Date {
-            let components = day > 30 ? DateComponents(year: 2026, month: 10, day: day, hour: 9, minute: 5)
-                : DateComponents(year: 2026, month: 11, day: day, hour: 9, minute: 5)
-            return Calendar(identifier: .gregorian).date(from: components) ?? Date(timeIntervalSince1970: 1_794_500_000)
+        /// When a model last changed, as the data gives it: 14:05 UTC on `day` November 2026 (October past the 30th),
+        /// which a card draws as 9:05 in the morning in New York's zone, whatever the device's.
+        static func changed(_ day: Int) -> Date {
+            let stamp = day > 30 ? "2026-10-\\(day)T14:05:00Z" : "2026-11-\\(day < 10 ? "0" : "")\\(day)T14:05:00Z"
+            return ISO8601DateFormatter().date(from: stamp) ?? Date(timeIntervalSince1970: 1_794_500_000)
         }
 
         static let models = [
             ModelGroup(id: "space", name: "Space", summary: "Planets, probes and telescopes: notes from a year of reading about spaceflight.",
-                       documents: 10, earnings: 18.42, tags: ["astronomy", "mars", "nasa"], online: true, color: "brown", updatedAt: morning(12)),
+                       documents: 10, earnings: 18.42, tags: ["astronomy", "mars", "nasa"], online: true, color: "brown", updatedAt: changed(12)),
             ModelGroup(id: "cooking", name: "Cooking", summary: "Techniques and base recipes worth keeping, from carbonara to ramen broth.",
-                       documents: 10, earnings: 9.75, tags: ["recipes", "technique"], online: true, color: "brown", updatedAt: morning(9)),
+                       documents: 10, earnings: 9.75, tags: ["recipes", "technique"], online: true, color: "brown", updatedAt: changed(9)),
             ModelGroup(id: "ml", name: "Machine Learning", summary: "Working notes on how neural networks learn and where they fail.",
-                       documents: 10, earnings: 7.90, tags: ["ai", "training"], online: true, color: "brown", updatedAt: morning(6)),
+                       documents: 10, earnings: 7.90, tags: ["ai", "training"], online: true, color: "brown", updatedAt: changed(6)),
             ModelGroup(id: "history", name: "Ancient History", summary: "Empires, libraries and trade routes of the ancient world.",
-                       documents: 10, earnings: 4.10, tags: ["rome", "egypt", "trade"], online: true, color: "brown", updatedAt: morning(3)),
+                       documents: 10, earnings: 4.10, tags: ["rome", "egypt", "trade"], online: true, color: "brown", updatedAt: changed(3)),
             ModelGroup(id: "music", name: "Music", summary: "Scales, rhythm and harmony, written while learning to play.",
-                       documents: 10, earnings: 2.35, tags: ["theory", "rhythm"], online: false, color: "brown", updatedAt: morning(31)),
+                       documents: 10, earnings: 2.35, tags: ["theory", "rhythm"], online: false, color: "brown", updatedAt: changed(31)),
         ]
         static let notes = (1...6).map { day in
             Note(id: "space-00\\(day)", title: "space-00\\(day)", body: "", category: "Space",
@@ -281,6 +281,14 @@ enum CatalogApps {
                 }
             }
             UserDefaults.standard.register(defaults: ["destination": ""])
+            // The dates in New York's zone on a Mac set to Pacific time, as the shots' simulator was: 14:05Z is 9:05 there.
+            let zone = NSTimeZone.default
+            NSTimeZone.default = TimeZone(identifier: "America/Los_Angeles") ?? zone
+            for (got, want) in [(CatalogValue.cardDate(SeerSeed.models[0].updatedAt), "November 12, 2026 · 9:05:00 AM"),
+                                (CatalogValue.rowDate(SeerSeed.models[0].updatedAt), "Nov 12, 2026")] {
+                if got == want { drawn.append("date " + got) } else { failed.append("date \\(got), not \\(want)") }
+            }
+            NSTimeZone.default = zone
             return (drawn, failed)
         }
     }

@@ -25,7 +25,7 @@ code (what it takes, what it makes, and the tables of words, look roles, symbols
 | `look` | no | one line a look role, `role = value`: a colour (accent, background, ink, card, panel, cardShadow, fieldShadow, badgeShadow, positive, inactive) as the app's name or `#RRGGBB [opacity] [/ #RRGGBB [opacity]]`, a font (title, body, body2, note, note2), design (serif, rounded, monospaced, default), a spacing (layer1 … layer7); a role left out takes the system's |
 | `strings` | no | one line a word, `key = "words"`: the nouns collection, collections, grouping, groupings first (every default is made of them), then any key such as catalog.title, browse.credits = "{credits} cr" or detail.title = "{name} {Collection}" |
 | `symbols` | no | one line an SF Symbol, `key = name`: mine.leading, mine.trailing, mine.empty, groupings.empty and the rest |
-| `tuning` | no | one line a timing, size or style, `key = value`: press, earnings, pulse, tags (animations as SwiftUI writes them), pressScale, pulseScale, earningsRise, cardRadius, fieldRadius, gradientStart, gradientStop, colorRadius, swatchSize (numbers), swatchColumns, decimals, topRanks, publicLimit (whole numbers), detail, edit, color, add, form (detents like [.fraction(0.6)]), swatches (system colour names), cardDate (a date style or a quoted format), cardTime, rowDate (styles) |
+| `tuning` | no | one line a timing, size or style, `key = value`: press, earnings, pulse, tags (animations as SwiftUI writes them), pressScale, pulseScale, earningsRise, cardRadius, fieldRadius, gradientStart, gradientStop, colorRadius, swatchSize (numbers), swatchColumns, decimals, topRanks, publicLimit (whole numbers), detail, edit, color, add, form (detents like [.fraction(0.6)]), swatches (system colour names), cardDate (a date style or a quoted format), cardTime, rowDate (styles), dateZone (the IANA time zone every date is drawn in, in US English; the device's when left out) |
 | `launch` | no | one line a destination, `destination = state`: mine, detail "<name>", edit "<name>", browse, groupings, or groupings new (the groupings with the new grouping's form up); the views open in that state, their own sheets presented, when the app is launched with -destination <name> |
 | `prefix` | no | a prefix for the view types when the app already has views of these names: `Kit` writes KitCatalogView |
 | `imports` | no | modules the conformances import, such as the package a mapped type is declared in |
@@ -114,11 +114,13 @@ pressScale = 0.97
 detail = [.fraction(0.6)]
 swatches = red orange green blue purple brown
 cardDate = "MMMM d, yyyy · h:mm:ss a"
+dateZone = America/New_York
 ```
 
 An animation as SwiftUI writes it, the leading dot optional; a number; a whole number; detents in brackets
 (`.medium`, `.large`, `.fraction(0.6)`, `.height(320)`); swatches as system colour names; a date style or, for
-`cardDate`, a quoted date format; a time style.
+`cardDate`, a quoted date format; a time style; for `dateZone`, an IANA time zone. With `dateZone` every date the views
+draw is in that zone and in US English, whatever the device's; without it, in the device's zone and language.
 
 ### `launch`: `destination = state`
 
@@ -359,6 +361,7 @@ The motion keys are the four animations; the rest are sizes, counts, detents, sw
 | `cardDate` | dateStyle | `.abbreviated` | a card's date: abbreviated, long, numeric or complete, or a quoted date format |
 | `cardTime` | timeStyle | `.omitted` | a card's time after its date: omitted, shortened, standard or complete |
 | `rowDate` | dateStyle | `.abbreviated` | a document row's date, its time omitted |
+| `dateZone` | zone | `nil` | the time zone every date is drawn in, an IANA name such as America/New_York, in US English; nil draws in the device's zone and language |
 
 Swatches are among `red`, `orange`, `yellow`, `green`, `mint`, `teal`, `cyan`, `blue`, `indigo`, `purple`, `pink`, `brown`, `gray`, `black`, `white`. Date styles: `.abbreviated`, `.long`, `.numeric`, `.complete`; time styles: `.omitted`, `.shortened`, `.standard`, `.complete`.
 <!-- /tables -->
@@ -487,7 +490,8 @@ The call that writes Seer's Models, Model, Model edit, The World and Looms ([`ex
     "edit = [.fraction(0.78), .large]",
     "color = [.fraction(0.32)]",
     "colorRadius = 28",
-    "cardDate = \"MMMM d, yyyy · h:mm:ss a\""
+    "cardDate = \"MMMM d, yyyy · h:mm:ss a\"",
+    "dateZone = America/New_York"
   ],
   "launch": [
     "models = mine",
@@ -572,6 +576,15 @@ a mapped field of the project's own type, the type's fields or the types the wor
 
 Each change made to make this agent more precise, dated, with the run that measured it and what it made of what it
 was asked before and after (`TESTING.md`). Newest first.
+
+### 2026-11-15 · `dateZone`: every date in one zone
+
+A tuning key for the time zone every date is drawn in, an IANA name, in US English: the original draws a card's date
+in New York's zone whatever the device's (`asReadableDateTime`), so the shots, taken on a simulator set to Pacific
+time, show 14:05Z as "9:05:00 AM". The Seer call sets `dateZone = America/New_York`; left out, the device's zone and
+language are used, as before.
+
+Measured: not yet. The first measure is the one-shot Seer run.
 
 ### 2026-11-15 · `groupings new`; the card's date mapped for Seer
 

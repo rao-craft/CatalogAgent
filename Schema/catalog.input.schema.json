@@ -1,0 +1,216 @@
+{
+  "$id" : "https://github.com/rao-craft/CatalogAgent/blob/main/Schema/catalog.input.schema.json",
+  "$schema" : "https://json-schema.org/draft/2020-12/schema",
+  "description" : "Every field a call to catalog may give; `directory` is Craft's, never the model's.",
+  "properties" : {
+    "imports" : {
+      "description" : "modules the conformances import, such as the package a mapped type is declared in",
+      "items" : {
+        "type" : "string"
+      },
+      "type" : "array"
+    },
+    "into" : {
+      "description" : "the folder for the views, relative to the project; Components/Catalog when left out",
+      "type" : "string"
+    },
+    "launch" : {
+      "description" : "one line a destination, `destination = state`: mine, detail \"<name>\", edit \"<name>\", browse or groupings; the views open in that state, their own sheets presented, when the app is launched with -destination <name>",
+      "items" : {
+        "type" : "string"
+      },
+      "type" : "array"
+    },
+    "look" : {
+      "description" : "one line a look role, `role = value`: a colour (accent, background, ink, card, panel, cardShadow, fieldShadow, badgeShadow, positive, inactive) as the app's name or `#RRGGBB [opacity] [/ #RRGGBB [opacity]]`, a font (title, body, body2, note, note2), design (serif, rounded, monospaced, default), a spacing (layer1 … layer7); a role left out takes the system's",
+      "items" : {
+        "type" : "string"
+      },
+      "type" : "array"
+    },
+    "mappings" : {
+      "description" : "one line a role (collection, document, listing, grouping): `collection: ModelGroup name=name summary=summary count=documents earnings=earnings tags=tags online=online color=color`; a bare path is read off the value, anything else is Swift that may name `value`",
+      "items" : {
+        "type" : "string"
+      },
+      "type" : "array"
+    },
+    "prefix" : {
+      "description" : "a prefix for the view types when the app already has views of these names: `Kit` writes KitCatalogView",
+      "type" : "string"
+    },
+    "screens" : {
+      "description" : "the screens to write, every one when left out: mine (the cards, detail and edit form), browse (others' ranked and searchable), groupings (named sets of collections)",
+      "items" : {
+        "enum" : [
+          "mine",
+          "browse",
+          "groupings"
+        ],
+        "type" : "string"
+      },
+      "type" : "array"
+    },
+    "strings" : {
+      "description" : "one line a word, `key = \"words\"`: the nouns collection, collections, grouping, groupings first (every default is made of them), then any key such as catalog.title, browse.credits = \"{credits} cr\" or detail.title = \"{name} {Collection}\"",
+      "examples" : [
+        [
+          "collection = \"collection\"",
+          "collections = \"collections\"",
+          "grouping = \"group\"",
+          "groupings = \"groups\"",
+          "mine.title = \"{Collections}\"",
+          "mine.leading = \"Profile\"",
+          "mine.trailing = \"More\"",
+          "mine.empty.title = \"No {Collections}\"",
+          "mine.empty.message = \"Your {collections} show here.\"",
+          "card.documents.one = \"document\"",
+          "card.documents.other = \"documents\"",
+          "card.earnings = \"credits\"",
+          "card.online = \"Online\"",
+          "card.offline = \"Offline\"",
+          "menu.edit = \"Edit {collection}\"",
+          "menu.offline = \"Set Offline\"",
+          "menu.online = \"Set Online\"",
+          "menu.delete = \"Delete {collection}\"",
+          "delete.title = \"Delete {name}?\"",
+          "delete.message = \"This can't be undone.\"",
+          "detail.title = \"{name} {Collection}\"",
+          "detail.updated = \"Updated: {date}\"",
+          "edit.title = \"Edit {Collection}\"",
+          "edit.name = \"Name your {collection}...\"",
+          "edit.description.header = \"Description\"",
+          "edit.description = \"Describe this {collection}...\"",
+          "edit.tags.header = \"Tags\"",
+          "edit.tags.add = \"add tag\"",
+          "edit.tag.add = \"Add Tag\"",
+          "edit.tag.edit = \"Edit Tag\"",
+          "edit.tag.field = \"Tag name\"",
+          "edit.tag.remove = \"Remove {tag}\"",
+          "edit.color = \"Color\"",
+          "edit.keyboard = \"Ok\"",
+          "edit.failed = \"Couldn't Save\"",
+          "close = \"Close\"",
+          "save = \"Save\"",
+          "cancel = \"Cancel\"",
+          "done = \"Done\"",
+          "create = \"Create\"",
+          "ok = \"OK\"",
+          "catalog.title = \"Explore\"",
+          "browse.tab = \"Browse\"",
+          "groupings.tab = \"{Groupings}\"",
+          "browse.search = \"Search all {collections}…\"",
+          "browse.clear = \"Clear\"",
+          "browse.owner = \"by {owner}\"",
+          "browse.rank = \"#{rank}\"",
+          "browse.credits = \"{credits} credits\"",
+          "browse.count.one = \"{count} doc\"",
+          "browse.count.other = \"{count} docs\"",
+          "browse.empty.title = \"No {Collections} Yet\"",
+          "browse.empty.message = \"Public {collections} will appear here once activity begins.\"",
+          "add.title = \"Add to {Grouping}\"",
+          "add.existing = \"Add to existing {Grouping}\"",
+          "add.new = \"Create new {Grouping}\"",
+          "add.mine = \"Create with your {collections}\"",
+          "groupings.count.one = \"{count} {collection}\"",
+          "groupings.count.other = \"{count} {collections}\"",
+          "groupings.active = \"active {grouping}\"",
+          "groupings.deselect = \"deselect\"",
+          "groupings.separator = \" · \"",
+          "groupings.select = \"Select {grouping}\"",
+          "groupings.new = \"New {Grouping}\"",
+          "groupings.edit = \"Edit {Grouping}\"",
+          "groupings.empty.title = \"No {Groupings} Yet\"",
+          "groupings.empty.message = \"Create a {grouping} to gather the {collections} you come back to.\"",
+          "form.name.header = \"{Grouping} name\"",
+          "form.name = \"e.g. Reading, Work, Favorites…\"",
+          "form.members = \"{Collections} in this {Grouping}\"",
+          "form.mine = \"Add your personal {collections}\"",
+          "form.add = \"Add {Collections}\"",
+          "form.public = \"Public {Collections}\"",
+          "form.yours = \"Your {Collections}\""
+        ]
+      ],
+      "items" : {
+        "type" : "string"
+      },
+      "type" : "array"
+    },
+    "symbols" : {
+      "description" : "one line an SF Symbol, `key = name`: mine.leading, mine.trailing, mine.empty, groupings.empty and the rest",
+      "examples" : [
+        [
+          "mine.leading = person.crop.circle",
+          "mine.trailing = ellipsis.circle",
+          "mine.empty = tray",
+          "menu.edit = pencil",
+          "menu.offline = network.slash",
+          "menu.online = network",
+          "menu.delete = trash.fill",
+          "document = doc.text.fill",
+          "close = xmark",
+          "edit.color = paintpalette",
+          "edit.keyboard = checkmark",
+          "edit.tag.add = plus",
+          "edit.tag.remove = xmark",
+          "swatch.check = checkmark",
+          "browse.search = magnifyingglass",
+          "browse.clear = xmark.circle.fill",
+          "browse.add = plus.circle",
+          "browse.empty = chart.bar",
+          "groupings.edit = pencil",
+          "groupings.selected = checkmark.circle.fill",
+          "groupings.unselected = circle",
+          "groupings.new = plus",
+          "groupings.empty = square.stack.3d.up"
+        ]
+      ],
+      "items" : {
+        "type" : "string"
+      },
+      "type" : "array"
+    },
+    "tuning" : {
+      "description" : "one line a timing, size or style, `key = value`: press, earnings, pulse, tags (animations as SwiftUI writes them), pressScale, pulseScale, earningsRise, cardRadius, fieldRadius, gradientStart, gradientStop, colorRadius, swatchSize (numbers), swatchColumns, decimals, topRanks, publicLimit (whole numbers), detail, edit, color, add, form (detents like [.fraction(0.6)]), swatches (system colour names), cardDate (a date style or a quoted format), cardTime, rowDate (styles)",
+      "examples" : [
+        [
+          "press = .spring(duration: 0.2, bounce: 0.4)",
+          "earnings = .spring(duration: 0.65, bounce: 0.35).delay(0.1)",
+          "pulse = .easeInOut(duration: 1.9).repeatForever(autoreverses: true)",
+          "tags = .spring(duration: 0.25)",
+          "pressScale = 0.97",
+          "pulseScale = 1.4",
+          "earningsRise = 8",
+          "cardRadius = 16",
+          "fieldRadius = 24",
+          "gradientStart = 0.2",
+          "gradientStop = 1.5",
+          "colorRadius = 28",
+          "swatchSize = 44",
+          "swatchColumns = 6",
+          "decimals = 2",
+          "topRanks = 3",
+          "publicLimit = 5",
+          "detail = [.fraction(0.6)]",
+          "edit = [.fraction(0.78), .large]",
+          "color = [.fraction(0.32)]",
+          "add = [.medium]",
+          "form = [.medium]",
+          "swatches = red orange yellow green mint teal cyan blue indigo purple pink brown",
+          "cardDate = .abbreviated",
+          "cardTime = .omitted",
+          "rowDate = .abbreviated"
+        ]
+      ],
+      "items" : {
+        "type" : "string"
+      },
+      "type" : "array"
+    }
+  },
+  "required" : [
+
+  ],
+  "title" : "What catalog takes (craft-agent/1)",
+  "type" : "object"
+}

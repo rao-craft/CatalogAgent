@@ -100,7 +100,9 @@ enum TemplateFill {
             guard let value = values.look[body] else { throw Failure.unknown(token) }
             return value
         case "date":
-            // `date` formatted as the call says: a card's by its style or quoted format, a row's by its style.
+            // `date` formatted as the call says: a card's by its style or quoted format, in the card's zone when the
+            // call names one; a row's by its style, always in the device's zone and language, `full` as a date put
+            // straight into a Text writes it.
             switch body {
             case "card":
                 guard let style = values.tuning["cardDate"], let time = values.tuning["cardTime"] else { throw Failure.unknown(token) }
@@ -108,7 +110,8 @@ enum TemplateFill {
                 return "CatalogValue.formatted(date, date: \(style), time: \(time))"
             case "row":
                 guard let style = values.tuning["rowDate"] else { throw Failure.unknown(token) }
-                return "CatalogValue.formatted(date, date: \(style), time: .omitted)"
+                if style == ".full" { return "DateFormatter.localizedString(from: date, dateStyle: .full, timeStyle: .full)" }
+                return "date.formatted(date: \(style), time: .omitted)"
             default:
                 throw Failure.unknown(token)
             }

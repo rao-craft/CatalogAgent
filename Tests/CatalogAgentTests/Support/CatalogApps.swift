@@ -281,12 +281,16 @@ enum CatalogApps {
                 }
             }
             UserDefaults.standard.register(defaults: ["destination": ""])
-            // The dates in New York's zone on a Mac set to Pacific time, as the shots' simulator was: 14:05Z is 9:05 there.
+            // The dates on a Mac set to Pacific time and US English, as the shots' simulator was: 14:05Z is 9:05 on the
+            // card, in New York's zone, and 6:05 in a row, in the device's. The system writes a narrow no-break space
+            // before AM and PM; the shots read it as a space.
             let zone = NSTimeZone.default
             NSTimeZone.default = TimeZone(identifier: "America/Los_Angeles") ?? zone
-            for (got, want) in [(CatalogValue.cardDate(SeerSeed.models[0].updatedAt), "November 12, 2026 · 9:05:00 AM"),
-                                (CatalogValue.rowDate(SeerSeed.models[0].updatedAt), "Nov 12, 2026")] {
-                if got == want { drawn.append("date " + got) } else { failed.append("date \\(got), not \\(want)") }
+            let updated = SeerSeed.models[0].updatedAt
+            for (got, want) in [(CatalogValue.cardDate(updated), "November 12, 2026 · 9:05:00 AM"),
+                                (CatalogValue.rowDate(updated), "Thursday, November 12, 2026 at 6:05:00 AM Pacific Standard Time")] {
+                let read = got.replacingOccurrences(of: "\\u{202F}", with: " ")
+                if read == want { drawn.append("date " + read) } else { failed.append("date \\(got), not \\(want)") }
             }
             NSTimeZone.default = zone
             return (drawn, failed)

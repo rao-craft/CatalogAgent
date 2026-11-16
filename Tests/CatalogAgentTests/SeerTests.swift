@@ -67,8 +67,8 @@ final class SeerTests: XCTestCase {
         // Models.
         #""Models""#, #""documents""#, #""document""#, #""credits""#, "%.2f", #""No Models""#, #""Edit model""#, #""Set Offline""#,
         #""Set Online""#, #""Delete model""#,
-        // Model detail: "Space Model", "Updated: Nov 12, 2026".
-        #") Model""#, #""Updated: \("#, ".abbreviated",
+        // Model detail: "Space Model", "Updated: Thursday, November 12, 2026 at 6:0…", the date in full as the shot draws it.
+        #") Model""#, #""Updated: \("#, "dateStyle: .full, timeStyle: .full",
         // Model edit.
         #""Cancel""#, #""Edit Model""#, #""Save""#, #""Name your model...""#, #""Description""#, #""Describe this model...""#, #""Tags""#,
         #""add tag""#, #""Add Tag""#, #""Edit Tag""#, #""Tag name""#, #""Color""#, #""Done""#,
@@ -125,11 +125,15 @@ final class SeerTests: XCTestCase {
         }
         let all = try seer().code
         XCTAssertTrue(all.contains(#"CatalogValue.formatted(date, "MMMM d, yyyy · h:mm:ss a")"#), "the card's date as the original writes it")
-        XCTAssertTrue(all.contains("CatalogValue.formatted(date, date: .abbreviated, time: .omitted)"), "a row's: Nov 12, 2026")
-        // Every date in New York's zone and US English, whatever the device's, as the original's `asReadableDateTime`.
-        XCTAssertTrue(all.contains(#"static let dateZone: TimeZone? = TimeZone(identifier: "America/New_York")"#))
-        XCTAssertTrue(all.contains("if let dateZone { formatter.timeZone = dateZone }"))
+        // A row's date as a date put straight into a Text writes it, in the device's zone and language:
+        // "Thursday, November 12, 2026 at 6:05:00 AM Pacific Standard Time" on the shots' simulator.
+        XCTAssertTrue(all.contains("DateFormatter.localizedString(from: date, dateStyle: .full, timeStyle: .full)"), "a row's date in full")
+        // The card's date alone in New York's zone and US English, whatever the device's, as the original's `asReadableDateTime`.
+        XCTAssertTrue(all.contains(#"static let cardZone: TimeZone? = TimeZone(identifier: "America/New_York")"#))
+        XCTAssertTrue(all.contains("if let cardZone { formatter.timeZone = cardZone }"))
         XCTAssertTrue(all.contains(#"locale: Locale(identifier: "en_US")"#))
+        let row = try XCTUnwrap(all.range(of: "static func rowDate(_ date: Date) -> String {"))
+        XCTAssertFalse(all[row.upperBound...].prefix(160).contains("cardZone"), "no zone of the call's on a row's date")
         XCTAssertTrue(all.contains(#""text.document.fill""#) && all.contains(#""person""#))
     }
 

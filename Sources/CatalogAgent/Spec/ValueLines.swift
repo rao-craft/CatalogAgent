@@ -257,10 +257,14 @@ enum TuningLine {
                 }
                 return (key, TemplateFill.literal(format))
             }
+            // A row's date may instead be `full`: the date and time in full and the zone by name, as a date put
+            // straight into a Text writes it.
             let word = value.hasPrefix(".") ? String(value.dropFirst()) : value
-            let styles = tuning.kind == .dateStyle ? CatalogTuning.dateStyles : CatalogTuning.timeStyles
+            let styles = (tuning.kind == .dateStyle ? CatalogTuning.dateStyles : CatalogTuning.timeStyles) + (key == "rowDate" ? ["full"] : [])
             guard styles.contains(word) else {
-                throw CatalogError.line(line, "`\(value)` is not a \(tuning.kind == .dateStyle ? "date" : "time") style: write " + styles.map { "." + $0 }.joined(separator: ", "))
+                let more = key == "cardDate" ? ", or a quoted date format like `\"MMMM d, yyyy · h:mm:ss a\"`" : ""
+                throw CatalogError.line(line, "`\(value)` is not a \(tuning.kind == .dateStyle ? "date" : "time") style: write "
+                    + styles.map { "." + $0 }.joined(separator: ", ") + more)
             }
             return (key, "." + word)
         case .zone:

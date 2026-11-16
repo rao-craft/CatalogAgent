@@ -124,8 +124,8 @@ struct CatalogTuning: Sendable, Equatable {
         .init("swatches", .swatches, "red orange yellow green mint teal cyan blue indigo purple pink brown", "the colours the edit form offers, as system colour names"),
         .init("cardDate", .dateStyle, ".abbreviated", "a card's date: abbreviated, long, numeric or complete, or a quoted date format"),
         .init("cardTime", .timeStyle, ".omitted", "a card's time after its date: omitted, shortened, standard or complete"),
-        .init("rowDate", .dateStyle, ".abbreviated", "a document row's date, its time omitted"),
-        .init("dateZone", .zone, "nil", "the time zone every date is drawn in, an IANA name such as America/New_York, in US English; nil draws in the device's zone and language"),
+        .init("cardZone", .zone, "nil", "the time zone a card's date is drawn in, an IANA name such as America/New_York, in US English; nil draws it in the device's zone and language"),
+        .init("rowDate", .dateStyle, ".abbreviated", "a document row's date, always in the device's zone and language: abbreviated, long, numeric or complete with its time omitted, or full: the date and time in full and the zone by name, as a date put straight into a Text writes it"),
     ]
 
     static func tuning(_ key: String) -> CatalogTuning? { all.first { $0.key == key } }

@@ -164,9 +164,11 @@ final class LineTests: XCTestCase {
         XCTAssertEqual(try TuningLine.parse("cardDate = .long").swift, ".long")
         XCTAssertEqual(try TuningLine.parse("cardTime = shortened").swift, ".shortened")
         XCTAssertEqual(try TuningLine.parse(#"cardDate = "MMMM d, yyyy · h:mm:ss a""#).swift, #""MMMM d, yyyy · h:mm:ss a""#)
-        XCTAssertEqual(try TuningLine.parse("dateZone = America/New_York").swift, #"TimeZone(identifier: "America/New_York")"#)
-        XCTAssertEqual(try TuningLine.parse(#"dateZone = "Asia/Kolkata""#).swift, #"TimeZone(identifier: "Asia/Kolkata")"#)
-        XCTAssertEqual(try TuningLine.parse("dateZone = nil").swift, "nil", "nil keeps the device's zone")
+        XCTAssertEqual(try TuningLine.parse("cardZone = America/New_York").swift, #"TimeZone(identifier: "America/New_York")"#)
+        XCTAssertEqual(try TuningLine.parse(#"cardZone = "Asia/Kolkata""#).swift, #"TimeZone(identifier: "Asia/Kolkata")"#)
+        XCTAssertEqual(try TuningLine.parse("cardZone = nil").swift, "nil", "nil keeps the device's zone")
+        XCTAssertEqual(try TuningLine.parse("rowDate = .full").swift, ".full")
+        XCTAssertEqual(try TuningLine.parse("rowDate = complete").swift, ".complete")
     }
 
     func testEveryTuningRefusalSaysWhy() {
@@ -185,10 +187,12 @@ final class LineTests: XCTestCase {
             ("swatches = red red", "a swatch is named twice"),
             ("cardDate = .short", "is not a date style: write .abbreviated, .long, .numeric, .complete"),
             ("cardTime = .abbreviated", "is not a time style"),
-            (#"rowDate = "MMM d""#, "is not a date style"),
+            (#"rowDate = "MMM d""#, "is not a date style: write .abbreviated, .long, .numeric, .complete, .full"),
+            ("cardDate = .full", "is not a date style: write .abbreviated, .long, .numeric, .complete, or a quoted date format"),
+            ("cardTime = .full", "is not a time style"),
             (#"cardDate = "MMM \"d""#, "is not a date format"),
-            ("dateZone = Mars/Olympus", "is not a time zone: write an IANA name, like `America/New_York`"),
-            ("dateZone = New York", "is not a time zone"),
+            ("cardZone = Mars/Olympus", "is not a time zone: write an IANA name, like `America/New_York`"),
+            ("cardZone = New York", "is not a time zone"),
         ]
         for (line, reason) in refusals {
             XCTAssertThrowsError(try TuningLine.parse(line), line) { error in

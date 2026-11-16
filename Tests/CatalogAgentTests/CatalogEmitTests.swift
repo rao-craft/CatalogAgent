@@ -200,7 +200,8 @@ final class CatalogEmitTests: XCTestCase {
         XCTAssertTrue(all.contains(#"[CatalogSwatch("red", .red), CatalogSwatch("mint", .mint)]"#))
         XCTAssertTrue(all.contains(#"String(format: "%.0f", value)"#))
         XCTAssertTrue(all.contains("CatalogValue.formatted(date, date: .numeric, time: .shortened)"))
-        XCTAssertTrue(all.contains("static let dateZone: TimeZone? = nil"), "no zone named: the device's")
+        XCTAssertTrue(all.contains("static let cardZone: TimeZone? = nil"), "no zone named: the device's")
+        XCTAssertTrue(all.contains("date.formatted(date: .abbreviated, time: .omitted)"), "a row's date by default: Nov 12, 2026")
     }
 
     // MARK: Determinism

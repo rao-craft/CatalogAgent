@@ -102,8 +102,9 @@ final class CatalogBuildTests: XCTestCase {
         XCTAssertTrue(warnings.isEmpty, warnings.joined(separator: "\n"))
         print("catalog build: mac \(mac.status == 0 ? "built" : "failed"), \(warnings.count) warnings in the kit's files")
 
-        // Every screen drawn from each app's own values: nothing traps.
-        let drawn = try run(["swift", "run", "--package-path", package.path, "Check"])
+        // Every screen drawn from each app's own values: nothing traps. In US English, as the shots' simulator was,
+        // so the dates read as the shots do.
+        let drawn = try run(["swift", "run", "--package-path", package.path, "Check", "-AppleLocale", "en_US"])
         XCTAssertEqual(drawn.status, 0, String(drawn.log.suffix(4_000)))
         XCTAssertNotNil(drawn.log.range(of: #"drew \d{2,} screens"#, options: .regularExpression), drawn.log)
         print("catalog build: " + (drawn.log.split(separator: "\n").last { $0.hasPrefix("drew ") }.map(String.init) ?? "drew nothing"))

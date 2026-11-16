@@ -144,32 +144,34 @@ extension Template {
         /// A number at the call's decimals: "18.42".
         static func amount(_ value: Double) -> String { String(format: "%.{{n:decimals}}f", value) }
 
-        /// The time zone every date is drawn in: the call's, in US English; nil draws in the device's zone and language.
-        static let dateZone: TimeZone? = {{n:dateZone}}
+        /// The time zone a card's date is drawn in: the call's, in US English; nil draws it in the device's zone and
+        /// language. A row's date is always the device's.
+        static let cardZone: TimeZone? = {{n:cardZone}}
 
-        /// `date` in a date format, in US English and the call's zone: "November 12, 2026 · 9:05:00 AM".
+        /// `date` in a date format, in US English and the card's zone: "November 12, 2026 · 9:05:00 AM".
         static func formatted(_ date: Date, _ format: String) -> String {
             let formatter = DateFormatter()
             formatter.locale = Locale(identifier: "en_US")
-            if let dateZone { formatter.timeZone = dateZone }
+            if let cardZone { formatter.timeZone = cardZone }
             formatter.dateFormat = format
             return formatter.string(from: date)
         }
 
-        /// `date` in a date and a time style: in the call's zone and US English when it names one, else the device's.
+        /// `date` in a date and a time style: in the card's zone and US English when the call names one, else the
+        /// device's.
         static func formatted(_ date: Date, date dateStyle: Date.FormatStyle.DateStyle, time timeStyle: Date.FormatStyle.TimeStyle) -> String {
-            guard let dateZone else { return date.formatted(date: dateStyle, time: timeStyle) }
+            guard let cardZone else { return date.formatted(date: dateStyle, time: timeStyle) }
             let style = Date.FormatStyle(date: dateStyle, time: timeStyle, locale: Locale(identifier: "en_US"),
-                                         calendar: Calendar(identifier: .gregorian), timeZone: dateZone)
+                                         calendar: Calendar(identifier: .gregorian), timeZone: cardZone)
             return date.formatted(style)
         }
 
-        /// A card's date.
+        /// A card's date, in the card's zone when the call names one.
         static func cardDate(_ date: Date) -> String {
             {{date:card}}
         }
 
-        /// A document row's date.
+        /// A document row's date, in the device's zone and language.
         static func rowDate(_ date: Date) -> String {
             {{date:row}}
         }

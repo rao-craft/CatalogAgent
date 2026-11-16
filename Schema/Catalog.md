@@ -25,7 +25,7 @@ code (what it takes, what it makes, and the tables of words, look roles, symbols
 | `look` | no | one line a look role, `role = value`: a colour (accent, background, ink, card, panel, cardShadow, fieldShadow, badgeShadow, positive, inactive) as the app's name or `#RRGGBB [opacity] [/ #RRGGBB [opacity]]`, a font (title, body, body2, note, note2), design (serif, rounded, monospaced, default), a spacing (layer1 … layer7); a role left out takes the system's |
 | `strings` | no | one line a word, `key = "words"`: the nouns collection, collections, grouping, groupings first (every default is made of them), then any key such as catalog.title, browse.credits = "{credits} cr" or detail.title = "{name} {Collection}" |
 | `symbols` | no | one line an SF Symbol, `key = name`: mine.leading, mine.trailing, mine.empty, groupings.empty and the rest |
-| `tuning` | no | one line a timing, size or style, `key = value`: press, earnings, pulse, tags (animations as SwiftUI writes them), pressScale, pulseScale, earningsRise, cardRadius, fieldRadius, gradientStart, gradientStop, colorRadius, swatchSize (numbers), swatchColumns, decimals, topRanks, publicLimit (whole numbers), detail, edit, color, add, form (detents like [.fraction(0.6)]), swatches (system colour names), cardDate (a date style or a quoted format), cardTime, rowDate (styles), dateZone (the IANA time zone every date is drawn in, in US English; the device's when left out) |
+| `tuning` | no | one line a timing, size or style, `key = value`: press, earnings, pulse, tags (animations as SwiftUI writes them), pressScale, pulseScale, earningsRise, cardRadius, fieldRadius, gradientStart, gradientStop, colorRadius, swatchSize (numbers), swatchColumns, decimals, topRanks, publicLimit (whole numbers), detail, edit, color, add, form (detents like [.fraction(0.6)]), swatches (system colour names), cardDate (a date style or a quoted format), cardTime (a time style), cardZone (the IANA time zone a card's date is drawn in, in US English; the device's when left out), rowDate (a date style, or full for the date and time in full and the zone by name; always the device's zone and language) |
 | `launch` | no | one line a destination, `destination = state`: mine, detail "<name>", edit "<name>", browse, groupings, or groupings new (the groupings with the new grouping's form up); the views open in that state, their own sheets presented, when the app is launched with -destination <name> |
 | `prefix` | no | a prefix for the view types when the app already has views of these names: `Kit` writes KitCatalogView |
 | `imports` | no | modules the conformances import, such as the package a mapped type is declared in |
@@ -114,13 +114,17 @@ pressScale = 0.97
 detail = [.fraction(0.6)]
 swatches = red orange green blue purple brown
 cardDate = "MMMM d, yyyy · h:mm:ss a"
-dateZone = America/New_York
+cardZone = America/New_York
+rowDate = .full
 ```
 
 An animation as SwiftUI writes it, the leading dot optional; a number; a whole number; detents in brackets
 (`.medium`, `.large`, `.fraction(0.6)`, `.height(320)`); swatches as system colour names; a date style or, for
-`cardDate`, a quoted date format; a time style; for `dateZone`, an IANA time zone. With `dateZone` every date the views
-draw is in that zone and in US English, whatever the device's; without it, in the device's zone and language.
+`cardDate`, a quoted date format, and for `rowDate`, `full`; a time style; for `cardZone`, an IANA time zone. With
+`cardZone` a card's date is drawn in that zone and in US English, whatever the device's; without it, in the device's
+zone and language. A row's date is always in the device's zone and language; `full` writes the date and time in full
+and the zone by name, as a date put straight into a Text does: "Thursday, November 12, 2026 at 6:05:00 AM Pacific
+Standard Time" on a device set to Pacific time and US English.
 
 ### `launch`: `destination = state`
 
@@ -360,8 +364,8 @@ The motion keys are the four animations; the rest are sizes, counts, detents, sw
 | `swatches` | swatches | `red orange yellow green mint teal cyan blue indigo purple pink brown` | the colours the edit form offers, as system colour names |
 | `cardDate` | dateStyle | `.abbreviated` | a card's date: abbreviated, long, numeric or complete, or a quoted date format |
 | `cardTime` | timeStyle | `.omitted` | a card's time after its date: omitted, shortened, standard or complete |
-| `rowDate` | dateStyle | `.abbreviated` | a document row's date, its time omitted |
-| `dateZone` | zone | `nil` | the time zone every date is drawn in, an IANA name such as America/New_York, in US English; nil draws in the device's zone and language |
+| `cardZone` | zone | `nil` | the time zone a card's date is drawn in, an IANA name such as America/New_York, in US English; nil draws it in the device's zone and language |
+| `rowDate` | dateStyle | `.abbreviated` | a document row's date, always in the device's zone and language: abbreviated, long, numeric or complete with its time omitted, or full: the date and time in full and the zone by name, as a date put straight into a Text writes it |
 
 Swatches are among `red`, `orange`, `yellow`, `green`, `mint`, `teal`, `cyan`, `blue`, `indigo`, `purple`, `pink`, `brown`, `gray`, `black`, `white`. Date styles: `.abbreviated`, `.long`, `.numeric`, `.complete`; time styles: `.omitted`, `.shortened`, `.standard`, `.complete`.
 <!-- /tables -->
@@ -491,7 +495,8 @@ The call that writes Seer's Models, Model, Model edit, The World and Looms ([`ex
     "color = [.fraction(0.32)]",
     "colorRadius = 28",
     "cardDate = \"MMMM d, yyyy · h:mm:ss a\"",
-    "dateZone = America/New_York"
+    "cardZone = America/New_York",
+    "rowDate = .full"
   ],
   "launch": [
     "models = mine",
@@ -576,6 +581,16 @@ a mapped field of the project's own type, the type's fields or the types the wor
 
 Each change made to make this agent more precise, dated, with the run that measured it and what it made of what it
 was asked before and after (`TESTING.md`). Newest first.
+
+### 2026-11-15 · a row's date in full and the device's; `cardZone`
+
+A document row's date can be drawn in full, `rowDate = .full`: the original puts the date straight into a Text, so
+its rows read "Updated: Thursday, November 12, 2026 at 6:05:00 AM Pacific Standard Time", in the device's zone and
+language, cut off at the row's end. A row's date is now always the device's: only the card's date is New York's in the
+original, so the zone key is the card's alone and is named for it, `cardZone`. The Seer call sets
+`cardZone = America/New_York` and `rowDate = .full`; the shots read 9:05 on the card and 6:05 in the rows.
+
+Measured: the r6b floor (before this change) read the rows as "Updated: Nov 12, 2026". The next floor reads them.
 
 ### 2026-11-15 · `dateZone`: every date in one zone
 

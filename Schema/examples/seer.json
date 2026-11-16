@@ -59,7 +59,8 @@
     "color = [.fraction(0.32)]",
     "colorRadius = 28",
     "cardDate = \"MMMM d, yyyy · h:mm:ss a\"",
-    "dateZone = America/New_York"
+    "cardZone = America/New_York",
+    "rowDate = .full"
   ],
   "launch": [
     "models = mine",
